@@ -5,9 +5,20 @@ var texImage;
 var tex;
 var texSize = 512;
 
-var indexCount;
+var indexCount; // used in init-buffers, draw-scene
 
-window.onload = () => { main(); };
+const offscreen = new OffscreenCanvas(512, 512);
+
+window.onload = () => {
+    const offctx = offscreen.getContext("2d");
+    var image = new Image();
+    image.onload = function () {
+        offctx.drawImage(image, 0, 0);
+        main();
+    }
+    image.src = textureBkgdDataURL; // see textureBkgdDataURL definition in text-rebderer.js
+    main();
+};
 //
 // start here
 //
@@ -72,7 +83,6 @@ function main() {
     highp vec4 texelColor = texture2D(uSampler, vTextureCoord);
 
     gl_FragColor = vec4(texelColor.rgb * vLighting, texelColor.a);
-    //if(gl_FragColor.a < 0.5) discard;
   }
 `;
 
@@ -106,29 +116,8 @@ function main() {
   // objects we'll be drawing.
   const buffers = initBuffers(gl);
 
-  // generate tex image
-  var im = new Array()
-  for (var i =0; i<texSize; i++)  im[i] = new Array();
-  for (var i =0; i<texSize; i++) 
-      for ( var j = 0; j < texSize; j++) 
-         im[i][j] = new Float32Array(4);
-  for (var i =0; i<texSize; i++) for (var j=0; j<texSize; j++) {
-    var c = (((i & 0x8) == 0) ^ ((j & 0x8)  == 0));
-	if (c <= 0)
-		im[i][j] = [224, 32, 224, 255];
-	else
-		im[i][j] = [32, 224, 224, 255];
-  }
-  // Convert floats to ubytes for texture
-    texImage = textImageData("WebGL text to animation"); // definition see in text-renderer.js
-  //texImage = new Uint8Array(4*texSize*texSize);
-    for (var i = 0; i < texSize; i++)
-        for (var j = 0; j < texSize; j++)
-            for (var k = 0; k < 4; k++) {
-                if (texImage[4 * texSize * i + 4 * j + 3] == 0)
-                    texImage[4 * texSize * i + 4 * j + k] = im[i][j][k];
-            }
-
+  // Generate texture
+  texImage = textImageData("WebGL text to animation"); // textImageData definition see in text-renderer.js
 
   // Load texture
   tex = gl.createTexture();
@@ -213,72 +202,4 @@ function loadShader(gl, type, source) {
   }
 
   return shader;
-}
-
-//
-// Initialize a texture and load an image.
-// When the image finished loading copy it into the texture.
-//
-function loadTexture(gl, url) {
-  const texture = gl.createTexture();
-  gl.bindTexture(gl.TEXTURE_2D, texture);
-
-  // Because images have to be downloaded over the internet
-  // they might take a moment until they are ready.
-  // Until then put a single pixel in the texture so we can
-  // use it immediately. When the image has finished downloading
-  // we'll update the texture with the contents of the image.
-  const level = 0;
-  const internalFormat = gl.RGBA;
-  const width = 1;
-  const height = 1;
-  const border = 0;
-  const srcFormat = gl.RGBA;
-  const srcType = gl.UNSIGNED_BYTE;
-  const pixel = new Uint8Array([0, 0, 255, 255]); // opaque blue
-  gl.texImage2D(
-    gl.TEXTURE_2D,
-    level,
-    internalFormat,
-    width,
-    height,
-    border,
-    srcFormat,
-    srcType,
-    pixel
-  );
-
-  const image = new Image();
-  image.onload = () => {
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.texImage2D(
-      gl.TEXTURE_2D,
-      level,
-      internalFormat,
-      srcFormat,
-      srcType,
-      image
-    );
-
-    // WebGL1 has different requirements for power of 2 images
-    // vs non power of 2 images so check if the image is a
-    // power of 2 in both dimensions.
-    if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-      // Yes, it's a power of 2. Generate mips.
-      gl.generateMipmap(gl.TEXTURE_2D);
-    } else {
-      // No, it's not a power of 2. Turn off mips and set
-      // wrapping to clamp to edge
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    }
-  };
-  image.src = url;
-
-  return texture;
-}
-
-function isPowerOf2(value) {
-  return (value & (value - 1)) === 0;
 }
