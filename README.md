@@ -34,4 +34,4 @@ use of the dataURL workaround is impractical. You cannot use javascript modules 
 are bonuses of working with file:/// data scheme -- some components can be developed without running an http server.
 
 ![](WebGL-text-to-animation.png)  
-[click to view demo](https://vasilich-tregub.github.io)
+[click here (not to picture above!) to view demo](https://vasilich-tregub.github.io)
