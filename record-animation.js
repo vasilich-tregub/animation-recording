@@ -1,4 +1,7 @@
-/* Canvas recording script */
+/* Canvas recording script 
+* Borrowed from view-source:https://varunbarad.github.io/experiments/canvas-recording.html
+* lines 155-241
+*/
 
 document.addEventListener('DOMContentLoaded', () => {
     let mediaRecorder = null;
