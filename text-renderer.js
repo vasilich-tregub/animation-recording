@@ -1,5 +1,5 @@
 function textImageData(textRun) {
-    const offctx = offscreen.getContext("2d");
+    const offctx = offscreen.getContext("2d", { willReadFrequently: true });
     offctx.strokeStyle = "lime";
     offctx.lineWidth = 3;
     offctx.fillStyle = "gold";

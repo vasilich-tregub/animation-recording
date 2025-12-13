@@ -10,7 +10,7 @@ var indexCount; // used in init-buffers, draw-scene
 const offscreen = new OffscreenCanvas(512, 512);
 
 window.onload = () => {
-    const offctx = offscreen.getContext("2d");
+    const offctx = offscreen.getContext("2d", { willReadFrequently: true });
     var image = new Image();
     image.onload = function () {
         offctx.drawImage(image, 0, 0);
