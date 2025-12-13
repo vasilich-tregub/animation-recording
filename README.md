@@ -19,8 +19,8 @@ To generate pixels of rendered text for a WebGL texture, I used an offscreen can
 The background image is generated from a base64 encoded image data URL; the DataURL const is defined in 
 textureBackgroundImage.js and the image is loaded within arrow function of the window.onload event listener. 
 The base64-encoded data of this DataURL const is generated from the image Earth512x512.jpeg included with this 
-repo. To generate the image background dataURL from another image, use the utility **textureBackgroundImage** which you
-can built with the CMake project included with this repo (the folder 'textureBackgroundImage'). To produce the expected 
+repo. To generate the image background dataURL from another image, use the utility **imageDataURLtool** which you
+can built with the CMake project included with this repo (the folder 'imageDataURLtool'). To produce the expected 
 effect in your animation, the image size should be 512x512. You can size your original image with an image editor or 
 you can add the image sizing feature to the textureBackgroundImage project or add the feature of texture image tiling in 
 webgl-demo.js -- anyway, this is a teaching aid project.
@@ -33,3 +33,5 @@ and you may trigger CORS errors when, for example, loading texture from image fi
 use of the dataURL workaround is impractical. You cannot use javascript modules when working with opaque origin. But there 
 are bonuses of working with file:/// data scheme -- some components can be developed without running an http server.
 
+![](WebGL-text-to-animation.png)  
+[click to view demo](https://vasilich-tregub.github.io)
