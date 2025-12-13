@@ -1,7 +1,7 @@
 ﻿// imageDataURLtool.cpp : Defines the entry point for the application.
-// THe base64 encoder, which exploits bit fields and structures 
+// The base64 encoder, which exploits bit fields and structures 
 // instead of commonly used bit shifts and masks, is borrowed from 
-// https://stackoverflow.com/questions/342409/how-do-i-base64-encode-decode-in-c
+// https://stackoverflow.com/questions/342409/how-do-i-base64-encode-decode-in-c#79840702
 //
 
 #include <iostream>
