@@ -1,4 +1,5 @@
 let solidRotation = 0.0;
+let solidRevolution = 0.0;
 let deltaTime = 0;
 
 var texImage;
@@ -142,7 +143,7 @@ function main() {
 
     drawScene(gl, programInfo, buffers, tex, solidRotation);
     solidRotation += deltaTime;
-
+    solidRevolution += deltaTime;
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);
