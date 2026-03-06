@@ -16,12 +16,8 @@ add_executable (imageDataURLtool "imageDataURLtool.cpp")
 
 add_executable (nonCapturingLambdaToPlainPointer "nonCapturingLambdaToPlainPointer.cpp")
 
-add_executable (classicelliptic "classicelliptic.c" "classicelliptic.h" "linalg.c")
-
-
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET imageDataURLtool PROPERTY CXX_STANDARD 20)
-  set_property(TARGET classicelliptic PROPERTY C_STANDARD 11)
 endif()
 
 # TODO: Add tests and install targets if needed.
